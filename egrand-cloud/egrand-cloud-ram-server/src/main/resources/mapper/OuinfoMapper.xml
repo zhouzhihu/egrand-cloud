@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egrand.cloud.ram.server.mapper.OuinfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.egrand.cloud.ram.client.model.entity.Ouinfo">
+        <id column="id" property="id" />
+        <result column="address" property="address" />
+        <result column="description" property="description" />
+        <result column="email" property="email" />
+        <result column="field1" property="field1" />
+        <result column="field2" property="field2" />
+        <result column="field3" property="field3" />
+        <result column="field4" property="field4" />
+        <result column="ou_code" property="ouCode" />
+        <result column="ou_full_code" property="ouFullCode" />
+        <result column="ou_full_name" property="ouFullName" />
+        <result column="ou_name" property="ouName" />
+        <result column="ou_type" property="ouType" />
+        <result column="telephone" property="telephone" />
+        <result column="zip_code" property="zipCode" />
+        <result column="parent_id" property="parentId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, address, description, email, field1, field2, field3, field4, ou_code, ou_full_code, ou_full_name, ou_name, ou_type, telephone, zip_code, parent_id
+    </sql>
+
+    <!--自定义关联查询-->
+    <!-- 表名 -->
+    <sql id="t_name">egd_org_ouinfo</sql>
+    <!-- 别名 -->
+    <sql id="t_alias">egd_org_ouinfo as ouinfo</sql>
+    <!--外键表关联定义 -->
+    <sql id="join"></sql>
+
+    <!-- 自定义查询单个实体 -->
+    <select id="getEntityMap" resultType="com.egrand.cloud.core.mybatis.EntityMap">
+        SELECT * FROM
+        <include refid="t_alias"/>
+        <include refid="join"/>
+        ${ew.customSqlSegment}
+    </select>
+
+    <!-- 自定义关联查询分页 -->
+    <select id="pageList" resultType="com.egrand.cloud.core.mybatis.EntityMap">
+        select ${ew.select} FROM
+        <include refid="t_alias"/>
+        <include refid="join"/>
+        ${ew.customSqlSegment}
+    </select>
+</mapper>

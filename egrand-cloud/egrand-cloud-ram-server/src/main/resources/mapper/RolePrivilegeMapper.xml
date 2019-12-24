@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egrand.cloud.ram.server.mapper.RolePrivilegeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.egrand.cloud.ram.client.model.entity.RolePrivilege">
+        <result column="role_id" property="roleId" />
+        <result column="privilege_id" property="privilegeId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        role_id, privilege_id
+    </sql>
+
+    <!--自定义关联查询-->
+    <!-- 表名 -->
+    <sql id="t_name">egd_sec_role_privilege</sql>
+    <!-- 别名 -->
+    <sql id="t_alias">egd_sec_role_privilege as privilege</sql>
+    <!--外键表关联定义 -->
+    <sql id="join"></sql>
+
+    <!-- 自定义查询单个实体 -->
+    <select id="getEntityMap" resultType="com.egrand.cloud.core.mybatis.EntityMap">
+        SELECT * FROM
+        <include refid="t_alias"/>
+        <include refid="join"/>
+        ${ew.customSqlSegment}
+    </select>
+
+    <!-- 自定义关联查询分页 -->
+    <select id="pageList" resultType="com.egrand.cloud.core.mybatis.EntityMap">
+        select ${ew.select} FROM
+        <include refid="t_alias"/>
+        <include refid="join"/>
+        ${ew.customSqlSegment}
+    </select>
+
+    <!--查询角色包含权限-->
+    <select id="selectRolePrivilegesList" resultMap="com.egrand.cloud.ram.server.mapper.PrivilegeMapper.BaseResultMap">
+        SELECT
+        egd_sec_privilege.id,
+        egd_sec_privilege.comments,
+        egd_sec_privilege.create_date,
+        egd_sec_privilege.icon,
+        egd_sec_privilege.inner_flag,
+        egd_sec_privilege.order_no,
+        egd_sec_privilege.privilege_code,
+        egd_sec_privilege.privilege_name,
+        egd_sec_privilege.status,
+        egd_sec_privilege.type,
+        egd_sec_privilege.update_date,
+        egd_sec_privilege.url_path,
+        egd_sec_privilege.model_id
+        FROM
+        egd_sec_role_privilege
+        INNER JOIN egd_sec_privilege ON egd_sec_role_privilege.privilege_id = egd_sec_privilege.id
+        WHERE role_id = #{roleId}
+    </select>
+</mapper>

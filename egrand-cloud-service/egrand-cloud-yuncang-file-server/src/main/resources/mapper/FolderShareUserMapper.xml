@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egrand.cloud.yuncang.file.server.mapper.FolderShareUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.egrand.cloud.yuncang.file.client.model.entity.FolderShareUser">
+        <id column="id" property="id" />
+        <result column="folder_id" property="folderId" />
+        <result column="folder_location" property="folderLocation" />
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="group_id" property="groupId" />
+        <result column="group_name" property="groupName" />
+        <result column="authority_all" property="authorityAll" />
+        <result column="authority_edit" property="authorityEdit" />
+        <result column="authority_view_upload" property="authorityViewUpload" />
+        <result column="authority_view" property="authorityView" />
+        <result column="authority_upload" property="authorityUpload" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, folder_id, folder_location, user_id, user_name, group_id, group_name, authority_all, authority_edit, authority_view_upload, authority_view, authority_upload
+    </sql>
+
+    <!--自定义关联查询-->
+    <!-- 表名 -->
+    <sql id="t_name">egd_yc_folder_share_user</sql>
+    <!-- 别名 -->
+    <sql id="t_alias">egd_yc_folder_share_user as user</sql>
+    <!--外键表关联定义 -->
+    <sql id="join"></sql>
+
+    <!-- 自定义查询单个实体 -->
+    <select id="getEntityMap" resultType="com.egrand.cloud.core.mybatis.EntityMap">
+        SELECT * FROM
+        <include refid="t_alias"/>
+        <include refid="join"/>
+        ${ew.customSqlSegment}
+    </select>
+
+    <!-- 自定义关联查询分页 -->
+    <select id="pageList" resultType="com.egrand.cloud.core.mybatis.EntityMap">
+        select ${ew.select} FROM
+        <include refid="t_alias"/>
+        <include refid="join"/>
+        ${ew.customSqlSegment}
+    </select>
+</mapper>

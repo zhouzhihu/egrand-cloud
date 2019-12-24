@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: erueka
+
+---
+spring:
+  profiles: eureka-server1
+server:
+  port: 19001
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: 192.168.109.128
+    instance-id: 192.168.109.128:19001
+  client:
+    # 表示是否将自己注册到Eureka，因为要构建集群环境，需要将自己注册到集群，所以应该开启
+    register-with-eureka: true
+    # 表示是否从Eureka获取注册信息，如果是当一节点，不需要同步其他Eureka节点，则可以设置为False
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://192.168.109.128:19002/eureka/,http://192.168.109.128:19003/eureka/
+
+---
+spring:
+  profiles: eureka-server2
+server:
+  port: 19002
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: 192.168.109.128
+    instance-id: 192.168.109.128:19002
+  client:
+    # 表示是否将自己注册到Eureka，因为要构建集群环境，需要将自己注册到集群，所以应该开启
+    register-with-eureka: true
+    # 表示是否从Eureka获取注册信息，如果是当一节点，不需要同步其他Eureka节点，则可以设置为False
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://192.168.109.128:19001/eureka/,http://192.168.109.128:19003/eureka/
+
+---
+spring:
+  profiles: eureka-server3
+server:
+  port: 19003
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: 192.168.109.128
+    instance-id: 192.168.109.128:19003
+  client:
+    # 表示是否将自己注册到Eureka，因为要构建集群环境，需要将自己注册到集群，所以应该开启
+    register-with-eureka: true
+    # 表示是否从Eureka获取注册信息，如果是当一节点，不需要同步其他Eureka节点，则可以设置为False
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://192.168.109.128:19001/eureka/,http://192.168.109.128:19002/eureka/

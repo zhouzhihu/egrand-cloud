@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egrand.cloud.ram.server.mapper.GroupUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.egrand.cloud.ram.client.model.entity.GroupUser">
+        <id column="user_id" property="userId" />
+        <result column="group_id" property="groupId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_id, group_id
+    </sql>
+
+    <!--自定义关联查询-->
+    <!-- 表名 -->
+    <sql id="t_name">egd_org_group_user</sql>
+    <!-- 别名 -->
+    <sql id="t_alias">egd_org_group_user as user</sql>
+    <!--外键表关联定义 -->
+    <sql id="join"></sql>
+
+    <!-- 自定义查询单个实体 -->
+    <select id="getEntityMap" resultType="com.egrand.cloud.core.mybatis.EntityMap">
+        SELECT * FROM
+        <include refid="t_alias"/>
+        <include refid="join"/>
+        ${ew.customSqlSegment}
+    </select>
+
+    <!-- 自定义关联查询分页 -->
+    <select id="pageList" resultType="com.egrand.cloud.core.mybatis.EntityMap">
+        select ${ew.select} FROM
+        <include refid="t_alias"/>
+        <include refid="join"/>
+        ${ew.customSqlSegment}
+    </select>
+
+    <!--查询用户包含的岗位-->
+    <select id="selectUserGroupsList" resultMap="com.egrand.cloud.ram.server.mapper.GroupMapper.BaseResultMap">
+        SELECT
+        egd_org_group_user.user_id,
+        egd_org_group.id,
+        egd_org_group.comments,
+        egd_org_group.create_date,
+        egd_org_group.group_name,
+        egd_org_group.status,
+        egd_org_group.update_date,
+        egd_org_group.ou_info_id
+        FROM
+        egd_org_group_user
+        INNER JOIN egd_org_group ON egd_org_group_user.group_id = egd_org_group.id
+        WHERE user_id = #{userId}
+    </select>
+</mapper>

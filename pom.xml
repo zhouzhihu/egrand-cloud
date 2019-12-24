@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.egrand.cloud</groupId>
+    <artifactId>egrand-cloud-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.1.0</version>
+    <modules>
+        <module>egrand-cloud-commons</module>
+        <module>egrand-cloud</module>
+        <module>egrand-cloud-service</module>
+    </modules>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.6.RELEASE</version>
+    </parent>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+
+        <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
+        <spring-boot-admin.version>2.1.6</spring-boot-admin.version>
+        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+        <zipkin.version>2.11.9</zipkin.version>
+
+        <dockerfile.maven.version>1.4.13</dockerfile.maven.version>
+        <docker.image.prefix>192.168.109.128:5000</docker.image.prefix>
+
+        <apache.commons-lang3.version>3.3.2</apache.commons-lang3.version>
+        <apache.commons-io.version>2.5</apache.commons-io.version>
+        <apache.commons.beanutils>1.9.3</apache.commons.beanutils>
+
+        <lombok.version>1.16.20</lombok.version>
+        <mysql.version>8.0.11</mysql.version>
+        <springfox.version>2.7.0</springfox.version>
+        <swagger-ui>3.1.4</swagger-ui>
+        <alibaba.fastjson.version>1.2.60</alibaba.fastjson.version>
+        <mybatis-plus.version>3.1.1</mybatis-plus.version>
+        <hutool.version>4.1.19</hutool.version>
+        <elasticsearch.version>6.8.5</elasticsearch.version>
+
+        <!--自定义版本-->
+        <egrand.cloud.version>1.1.0-SNAPSHOT</egrand.cloud.version>
+        <egrand.cloud.common.version>1.1.0-SNAPSHOT</egrand.cloud.common.version>
+        <egrand.cloud.service.version>1.1.0-SNAPSHOT</egrand.cloud.service.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <!--Lombok-->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <!--swagger2 start-->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-simple</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>swagger-ui</artifactId>
+                <version>${swagger-ui}</version>
+            </dependency>
+            <!--swagger2 start-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${alibaba.fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!--工具类-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>transport</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.3.2</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>dockerfile-maven-plugin</artifactId>
+                    <version>${dockerfile.maven.version}</version>
+                    <executions>
+                        <execution>
+                            <id>tag-latest</id>
+                            <phase>deploy</phase>
+                            <goals>
+                                <goal>build</goal>
+                                <goal>tag</goal>
+                                <goal>push</goal>
+                            </goals>
+                            <configuration>
+                                <tag>latest</tag>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>tag-version</id>
+                            <phase>deploy</phase>
+                            <goals>
+                                <goal>build</goal>
+                                <goal>tag</goal>
+                                <goal>push</goal>
+                            </goals>
+                            <configuration>
+                                <tag>${project.version}</tag>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>default</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>build</goal>
+                                <goal>tag</goal>
+                            </goals>
+                            <configuration>
+                                <tag>${project.version}</tag>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <!-- 上下文路径配置，此处设置为项目根路径 用来读取Dockerfile-->
+                        <contextDirectory>${project.basedir}</contextDirectory>
+                        <!--使用maven setting认证-->
+                        <!--<useMavenSettingsForAuth>true</useMavenSettingsForAuth>-->
+                        <!--子用户名@企业别名 或 子用户名@主账号UID-->
+                        <!--                    <username>镜像仓库用户名</username>-->
+                        <!--                    &lt;!&ndash;在容器镜像服务控制台"设置Registry登陆密码"&ndash;&gt;-->
+                        <!--                    <password>镜像仓库密码</password>-->
+                        <!--                    &lt;!&ndash;上传的仓库路径 registry.cn-hangzhou.aliyuncs.com/namespace/repositoryname&ndash;&gt;-->
+                        <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                        <!-- 标记 -->
+                        <tag>latest</tag>
+                        <!-- 作为Dockerfile文件传入-->
+                        <buildArgs>
+                            <WAR_FILE>${project.build.finalName}.jar</WAR_FILE>
+                        </buildArgs>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <url>http://192.168.109.128:8081/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <url>http://192.168.109.128:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+</project>

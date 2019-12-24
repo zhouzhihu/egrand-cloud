@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egrand.cloud.yuncang.file.server.mapper.FolderWorkMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.egrand.cloud.yuncang.file.client.model.entity.FolderWork">
+        <id column="id" property="id" />
+        <result column="folder_id" property="folderId" />
+        <result column="limit_time" property="limitTime" />
+        <result column="remind_message" property="remindMessage" />
+        <result column="remind_expression" property="remindExpression" />
+        <result column="remind_mode" property="remindMode" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, folder_id, limit_time, remind_message, remind_expression, remind_mode
+    </sql>
+
+    <!--自定义关联查询-->
+    <!-- 表名 -->
+    <sql id="t_name">egd_yc_folder_work</sql>
+    <!-- 别名 -->
+    <sql id="t_alias">egd_yc_folder_work as work</sql>
+    <!--外键表关联定义 -->
+    <sql id="join"></sql>
+
+    <!-- 自定义查询单个实体 -->
+    <select id="getEntityMap" resultType="com.egrand.cloud.core.mybatis.EntityMap">
+        SELECT * FROM
+        <include refid="t_alias"/>
+        <include refid="join"/>
+        ${ew.customSqlSegment}
+    </select>
+
+    <!-- 自定义关联查询分页 -->
+    <select id="pageList" resultType="com.egrand.cloud.core.mybatis.EntityMap">
+        select ${ew.select} FROM
+        <include refid="t_alias"/>
+        <include refid="join"/>
+        ${ew.customSqlSegment}
+    </select>
+</mapper>

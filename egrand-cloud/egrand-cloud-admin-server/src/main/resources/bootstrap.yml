@@ -1,0 +1,33 @@
+spring:
+  profiles:
+    active: dev
+---
+spring:
+  profiles: dev
+  cloud:
+    config:
+      uri: http://192.168.109.128:21011
+      name: admin,redis,rabbitmq,common
+      profile: dev
+      label: master
+      enabled: true
+---
+spring:
+  profiles: test
+  cloud:
+    config:
+      uri: http://192.168.109.128:21011
+      name: admin,redis,rabbitmq,common
+      profile: test
+      label: master
+      enabled: true
+---
+spring:
+  profiles: prod
+  cloud:
+    config:
+      uri: http://192.168.109.128:21011
+      name: admin,redis,rabbitmq,common
+      profile: prod
+      label: master
+      enabled: true

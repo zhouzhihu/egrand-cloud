@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egrand.cloud.ram.server.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.egrand.cloud.ram.client.model.entity.User">
+        <id column="id" property="id" />
+        <result column="comments" property="comments" />
+        <result column="create_date" property="createDate" />
+        <result column="display_name" property="displayName" />
+        <result column="email" property="email" />
+        <result column="is_tmp_user" property="isTmpUser" />
+        <result column="last_login_date" property="lastLoginDate" />
+        <result column="mobile_phone" property="mobilePhone" />
+        <result column="password" property="password" />
+        <result column="status" property="status" />
+        <result column="type" property="type" />
+        <result column="update_date" property="updateDate" />
+        <result column="username" property="username" />
+        <result column="validity_end_date" property="validityEndDate" />
+        <result column="validity_start_date" property="validityStartDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, comments, create_date, display_name, email, is_tmp_user, last_login_date, mobile_phone, password, status, type, update_date, username, validity_end_date, validity_start_date
+    </sql>
+
+    <!--自定义关联查询-->
+    <!-- 表名 -->
+    <sql id="t_name">egd_org_user</sql>
+    <!-- 别名 -->
+    <sql id="t_alias">egd_org_user as user</sql>
+    <!--外键表关联定义 -->
+    <sql id="join"></sql>
+
+    <!-- 自定义查询单个实体 -->
+    <select id="getEntityMap" resultType="com.egrand.cloud.core.mybatis.EntityMap">
+        SELECT * FROM
+        <include refid="t_alias"/>
+        <include refid="join"/>
+        ${ew.customSqlSegment}
+    </select>
+
+    <!-- 自定义关联查询分页 -->
+    <select id="pageList" resultType="com.egrand.cloud.core.mybatis.EntityMap">
+        select ${ew.select} FROM
+        <include refid="t_alias"/>
+        <include refid="join"/>
+        ${ew.customSqlSegment}
+    </select>
+</mapper>
