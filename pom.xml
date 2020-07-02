@@ -37,7 +37,7 @@
         <apache.commons.beanutils>1.9.3</apache.commons.beanutils>
 
         <lombok.version>1.16.20</lombok.version>
-        <mysql.version>8.0.11</mysql.version>
+        <mysql.version>8.0.16</mysql.version>
         <springfox.version>2.7.0</springfox.version>
         <swagger-ui>3.1.4</swagger-ui>
         <alibaba.fastjson.version>1.2.60</alibaba.fastjson.version>
